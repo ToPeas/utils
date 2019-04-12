@@ -1,7 +1,8 @@
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
-import eslint from 'rollup-plugin-eslint'
+import {eslint} from 'rollup-plugin-eslint'
 import commonjs from 'rollup-plugin-commonjs'
+import replace from 'rollup-plugin-replace'
 import { uglify } from 'rollup-plugin-uglify'
 
 const packages = require('./package.json')
@@ -23,6 +24,8 @@ const fileNames = {
   production: `${packages.name}.min.js`
 }
 
+const fileName = fileNames[ENV]
+
 export default {
   input: `${paths.input.root}`,
   output: {
@@ -34,9 +37,10 @@ export default {
     exclude: 'node_modules/**'
   },
   plugins: [
+    resolve(),
     babel({
       exclude: 'node_modules/**',
-      plugins: ['external-helpers']
+      runtimeHelpers: true,
     }),
     replace({
       exclude: 'node_modules/**',

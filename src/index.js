@@ -1,4 +1,24 @@
-import _cloneDeep form 'lodash/cloneDeep'
+import _cloneDeep from 'lodash/cloneDeep'
+import format from 'date-fns/format'
+
+export function dateFormat(time, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  return time ? format(time, pattern) : ''
+}
+
+export function dateRangeFormat(dateRange, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  if (Array.isArray(dateRange)) {
+    const dr = dateRange.map(date => dateFormat(date, pattern))
+
+    // startTime and endTime must exist togegher.
+    if (dr[0] && dr[1]) {
+      return dr
+    }
+    return []
+  }
+  return dateRange || []
+}
+
+
 
 // 删除对象里面为空的value，包括数组
 export function omitKeys(obj) {
